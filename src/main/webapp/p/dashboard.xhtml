@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>PIM | Dashboard</title>
+
+        <!-- DataTables -->
+        <link rel="stylesheet" href="/pim/r/plugin/datatables-bs4/css/dataTables.bootstrap4.min.css" />
+        <link rel="stylesheet" href="/pim/r/plugin/datatables-responsive/css/responsive.bootstrap4.min.css" />
+        <link rel="stylesheet" href="/pim/r/plugin/datatables-buttons/css/buttons.bootstrap4.min.css" />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback" />
+        <link rel="stylesheet" href="/pim/r/plugin/fontawesome-free/css/all.min.css" />
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+        <link rel="stylesheet" href="/pim/r/css/adminlte.min.css" />
+    </h:head>
+    <h:body>
+        <div class="wrapper">
+            <ui:include src="include/sidebar.xhtml" />
+
+            <div class="content-wrapper">
+                <div class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1 class="m-0">Dashboard</h1>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item active">Dashboard</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box bg-info">
+                                    <div class="inner">
+                                        <h3>#{operacaoController.tipoCriptoativoList.size()}</h3>
+
+                                        <p>Criptomoedas Cadastradas</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-stats-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box bg-success">
+                                    <div class="inner">
+                                        <h3>#{operacaoController.operacoesCadastrados.size()}</h3>
+
+                                        <p>Operações</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-stats-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box bg-warning">
+                                    <div class="inner">
+                                        <h3>#{contratoController.contratosCadastrados.size()}</h3>
+
+                                        <p>Contratos</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-stats-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box bg-danger">
+                                    <div class="inner">
+                                        <h3>
+                                            <h:outputText value="#{loginController.currentUser.saldoCarteira}">
+                                                <f:convertNumber minFractionDigits="2" locale="pt_BR" />
+                                            </h:outputText> </h3>
+
+                                        <p>Saldo Carteira</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-stats-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Últimas Operações</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <table id="example2" class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Descrição</th>
+                                                    <th>Tipo de Operação</th>
+                                                    <th>Criptoativo</th>
+                                                    <th>Valor</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <ui:repeat value="#{operacaoController.operacoesCadastrados}" var="data" varStatus="status">  
+                                                    <tr>
+                                                        <td>#{data.descricao}</td>
+                                                        <td>#{data.tipoOperacao.nome}</td>
+                                                        <td>#{data.tipoCriptoativo.nome}</td>
+                                                        <td>
+                                                            <h:outputText style="color: #{data.tipoOperacao.id == 1 ? 'green' : 'red'};" value="R$ #{data.valor}">
+                                                                <f:convertNumber minFractionDigits="2" locale="pt_BR" />
+                                                            </h:outputText>
+                                                        </td>
+                                                    </tr>
+                                                </ui:repeat>  
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-header border-0">
+                                        <div class="d-flex justify-content-between">
+                                            <h3 class="card-title">Variação do Ethereum</h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <p class="d-flex flex-column">
+                                                <span class="text-bold text-lg">820</span>
+                                                <span>Variação de pontos</span>
+                                            </p>
+                                            <p class="ml-auto d-flex flex-column text-right">
+                                                <span class="text-success">
+                                                    <i class="fas fa-arrow-up"></i> 12.5%
+                                                </span>
+                                                <span class="text-muted">Desde a semana passada</span>
+                                            </p>
+                                        </div>
+
+                                        <div class="position-relative mb-4">
+                                            <canvas id="visitors-chart" height="200"></canvas>
+                                        </div>
+
+                                        <div class="d-flex flex-row justify-content-end">
+                                            <span class="mr-2">
+                                                <i class="fas fa-square text-primary"></i> Esta Semana
+                                            </span>
+
+                                            <span>
+                                                <i class="fas fa-square text-gray"></i> Semana Passada
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-header border-0">
+                                        <div class="d-flex justify-content-between">
+                                            <h3 class="card-title">Valor do Bitcoin</h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <p class="d-flex flex-column">
+                                                <span class="text-bold text-lg">$18,230.00</span>
+                                                <span>Comparativo de Preços</span>
+                                            </p>
+                                            <p class="ml-auto d-flex flex-column text-right">
+                                                <span class="text-success">
+                                                    <i class="fas fa-arrow-up"></i> 33.1%
+                                                </span>
+                                                <span class="text-muted">Desde o mês passado</span>
+                                            </p>
+                                        </div>
+
+                                        <div class="position-relative mb-4">
+                                            <canvas id="sales-chart" height="200"></canvas>
+                                        </div>
+
+                                        <div class="d-flex flex-row justify-content-end">
+                                            <span class="mr-2">
+                                                <i class="fas fa-square text-primary"></i> 2020
+                                            </span>
+
+                                            <span>
+                                                <i class="fas fa-square text-gray"></i> 2019
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Footer -->
+            <footer class="main-footer">
+                <strong>Copyright &#169; 2020-2020 <a href="#">PIM</a>.</strong>
+                Todos os direitos reservados
+            </footer>
+        </div>
+
+        <!-- jQuery -->
+        <script src="/pim/r/plugin/jquery/jquery.min.js"></script>
+        <script src="/pim/r/plugin/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="/pim/r/js/adminlte.js"></script>
+
+        <!-- OPTIONAL SCRIPTS -->
+        <script src="/pim/r/plugin/chart.js/Chart.min.js"></script>
+        <script src="/pim/r/js/demo.js"></script>
+        <script src="/pim/r/js/pages/dashboard3.js"></script>
+
+        <!-- DataTables  & Plugins -->
+        <script src="/pim/r/plugin/datatables/jquery.dataTables.min.js"></script>
+        <script src="/pim/r/plugin/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="/pim/r/plugin/datatables-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="/pim/r/plugin/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+        <script src="/pim/r/plugin/datatables-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="/pim/r/plugin/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+        <script src="/pim/r/plugin/jszip/jszip.min.js"></script>
+        <script src="/pim/r/plugin/pdfmake/pdfmake.min.js"></script>
+        <script src="/pim/r/plugin/pdfmake/vfs_fonts.js"></script>
+        <script src="/pim/r/plugin/datatables-buttons/js/buttons.html5.min.js"></script>
+        <script src="/pim/r/plugin/datatables-buttons/js/buttons.print.min.js"></script>
+        <script src="/pim/r/plugin/datatables-buttons/js/buttons.colVis.min.js"></script>
+        
+        <!-- Page specific script -->
+        <script>
+            $(function () {
+                $('#example2').DataTable({
+                    "paging": true,
+                    "lengthChange": false,
+                    "searching": false,
+                    "ordering": false,
+                    "info": true,
+                    "autoWidth": false,
+                    "responsive": true,
+                });
+            });
+        </script>
+    </h:body>
+</html>

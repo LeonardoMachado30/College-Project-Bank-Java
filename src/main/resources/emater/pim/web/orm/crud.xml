@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<entity-mappings
+    xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.eclipse.org/eclipselink/xsds/persistence/orm 
+                        http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_1_2.xsd"
+    version="1.2">
+    
+    <!-- ############## Usuario -->
+    
+    <!-- Login -->
+    <named-native-query name="Usuario.login"
+          result-class="br.com.pim.model.user.Usuario">
+        <query>
+             SELECT 
+             	* 
+             FROM 
+             	cliente 
+             WHERE 
+             	senha = SHA2(?, 512) 
+             	AND cpf = ?
+        </query>
+        <lock-mode>NONE</lock-mode>
+    </named-native-query>
+    
+    <!-- Common -->    
+    <named-query name="Banco.findAll">
+        <query>
+            SELECT 
+                o
+            FROM 
+                Banco o
+            ORDER BY
+                o.nome ASC
+        </query>
+        <lock-mode>NONE</lock-mode>
+    </named-query>
+    
+    <named-query name="TipoContrato.findAll">
+        <query>
+            SELECT 
+                o
+            FROM 
+                TipoContrato o
+            ORDER BY
+                o.nome ASC
+        </query>
+        <lock-mode>NONE</lock-mode>
+    </named-query>
+    
+    <named-query name="TipoCriptoativo.findAll">
+        <query>
+            SELECT 
+                o
+            FROM 
+                TipoCriptoativo o
+            ORDER BY
+                o.nome ASC
+        </query>
+        <lock-mode>NONE</lock-mode>
+    </named-query>
+    
+    <named-query name="Operacao.findAll">
+        <query>
+            SELECT 
+                o
+            FROM 
+                Operacao o
+            ORDER BY
+                o.id DESC
+        </query>
+        <lock-mode>NONE</lock-mode>
+    </named-query>
+    
+    <named-query name="TipoOperacao.findAll">
+        <query>
+            SELECT 
+                o
+            FROM 
+                TipoOperacao o
+            ORDER BY
+                o.id DESC
+        </query>
+        <lock-mode>NONE</lock-mode>
+    </named-query>
+    
+    <named-query name="CartoesCadastrados.findAll">
+        <query>
+            SELECT o FROM UsuarioCartoesCadastrados o WHERE o.usuario = :usuario
+        </query>
+    </named-query>
+    
+    <named-query name="Contratos.findAll">
+        <query>
+            SELECT o FROM UsuarioContrato o WHERE o.usuario = :usuario
+        </query>
+    </named-query>
+    
+    <named-query name="OperacoesCadastradas.findAll">
+        <query>
+            SELECT o FROM Operacao o WHERE o.usuario = :usuario ORDER BY o.id DESC
+        </query>
+    </named-query>
+    
+</entity-mappings>

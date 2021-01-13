@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="PimPU" transaction-type="JTA">
+    <jta-data-source>java:/PimDS</jta-data-source>
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    
+    <class>br.com.pim.model.user.Usuario</class>
+    <class>br.com.pim.model.user.UsuarioCartoesCadastrados</class>
+    <class>br.com.pim.model.user.UsuarioContrato</class>
+
+    <class>br.com.pim.model.investimento.Operacao</class>
+    
+    <class>br.com.pim.model.common.Banco</class>
+    <class>br.com.pim.model.common.TipoCriptoativo</class>
+    <class>br.com.pim.model.common.TipoOperacao</class>
+    <class>br.com.pim.model.common.TipoContrato</class>
+            
+    <!-- Token pproperties -->
+    <mapping-file>emater/pim/web/orm/crud.xml</mapping-file>
+    
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <shared-cache-mode>ALL</shared-cache-mode>
+    
+    <properties>
+      <!-- Weaving -->
+      <property name="eclipselink.weaving" value="true"/>
+      <property name="eclipselink.weaving.eager" value="true"/>
+      <property name="eclipselink.weaving.lazy" value="true"/>
+      <property name="eclipselink.weaving.changetracking" value="true"/>
+      <!-- Exception Logging -->
+      <property name="eclipselink.logging.exceptions" value="true"/>
+      <!-- Log level -->
+      <property name="eclipselink.logging.level" value="OFF"/>
+      <property name="eclipselink.logging.level.sql" value="OFF"/>
+      <property name="eclipselink.logging.level.cache" value="OFF"/>
+      <!-- enable SQL parameter binding visibility logging -->
+      <property name="eclipselink.logging.parameters" value="false"/>
+      <!-- Cache configuration -->
+      <property name="eclipselink.cache.size.default" value="10000"/>
+      <property name="eclipselink.cache.type.default" value="WEAK"/>
+      <property name="eclipselink.flush-clear.cache" value="DropInvalidate"/>
+      <!-- Optimizations -->
+      <property name="eclipselink.jdbc.batch-writing" value="JDBC"/>
+      <property name="eclipselink.jdbc.cache-statements" value="true"/>
+      <!-- Other -->
+      <property name="eclipselink.allow-zero-id" value="true"/>
+      <property name="eclipselink.jdbc.native-sql" value="true"/>
+      <property name="eclipselink.target-server" value="JBoss"/>
+      <property name="eclipselink.target-database" value="MySQL"/>
+      <property name="eclipselink.jpa.uppercase-column-names" value="true"/>
+      <property name="eclipselink.exception-handler" value="br.com.pim.model.exception.DomainExceptionHandler"/>
+    </properties>
+  </persistence-unit>
+</persistence>

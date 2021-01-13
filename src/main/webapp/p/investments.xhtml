@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>PIM | Investimentos</title>
+
+        <!-- DataTables -->
+        <link rel="stylesheet" href="/pim/r/plugin/datatables-bs4/css/dataTables.bootstrap4.min.css" />
+        <link rel="stylesheet" href="/pim/r/plugin/datatables-responsive/css/responsive.bootstrap4.min.css" />
+        <link rel="stylesheet" href="/pim/r/plugin/datatables-buttons/css/buttons.bootstrap4.min.css" />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback" />
+        <link rel="stylesheet" href="/pim/r/plugin/fontawesome-free/css/all.min.css" />
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+        <link rel="stylesheet" href="/pim/r/css/adminlte.min.css" />
+    </h:head>
+    <h:body>
+        <div class="wrapper">
+            <ui:include src="include/sidebar.xhtml" />
+
+            <div class="content-wrapper">
+                <div class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1 class="m-0">Investimentos</h1>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item active">Investimentos</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <h:form prependId="false">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Minhas Operações</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <p:dataTable value="#{operacaoController.operacoesCadastrados}" rowIndexVar="ind" var="data" emptyMessage="Nenhum contrato cadastrado">
+                                                    <p:column headerText="Descrição">
+                                                        #{data.descricao}
+                                                    </p:column>
+
+                                                    <p:column headerText="Tipo de Operação">
+                                                        <h:outputText value="#{data.tipoOperacao.nome}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="Criptoativo">
+                                                        <h:outputText value="#{data.tipoCriptoativo.nome}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="Valor">
+                                                        <h:outputText style="color: #{data.tipoOperacao.id == 1 ? 'green' : 'red'};" value="R$ #{data.valor}">
+                                                            <f:convertNumber minFractionDigits="2" locale="pt_BR" />
+                                                        </h:outputText>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-footer">
+                                            <p:commandLink value="Adicionar" onclick="PF('doTransaction').show()" styleClass="btn btn-primary btn-block"/>
+                                        </div>
+                                    </div>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <p:dialog header="Fazer Operação" width="450" modal="true" id="doTransaction" widgetVar="doTransaction" minHeight="40">
+                <h:form prependId="false">
+                    <div class="content">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="inputName">Tipo de Operação</label>
+                                        <p:selectOneRadio id="console" unselectable="true" value="#{operacaoController.opcaoSelecionada}">
+                                            <f:selectItem itemLabel="Compra"   itemValue="2" />
+                                            <f:selectItem itemLabel="Depósito" itemValue="1" />
+                                            
+                                            <p:ajax event="valueChange" process="@this" update="@form" />
+                                        </p:selectOneRadio>
+                                    </div>
+                                </div>
+                                <h:panelGroup layout="block" rendered="#{operacaoController.opcaoSelecionada == 2}" class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="inputName">Criptoativo</label>
+                                        <p:selectOneMenu autoWidth="false" style="height: 38px; width: 100%;" value="#{operacaoController.tipoCriptoativo}" id="tipoCriptoativo" converter="converterObject">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+                                            <f:selectItems value="#{operacaoController.tipoCriptoativoList}" var="cp" itemValue="#{cp}" itemLabel="#{cp.nome}" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                </h:panelGroup>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="inputName">Valor</label>
+                                        <h:inputText value="#{operacaoController.valor}" maxlength="8" styleClass="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="inputName">Descrição</label>
+                                        <h:inputText value="#{operacaoController.descricao}" maxlength="50" styleClass="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <p:commandLink value="Adicionar" update="@all" actionListener="#{operacaoController.adicionaOperacao()}" styleClass="btn btn-primary btn-block"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </p:dialog>
+
+            <!-- Main Footer -->
+            <footer class="main-footer">
+                <strong>Copyright &#169; 2020-2020 <a href="#">PIM</a>.</strong>
+                Todos os direitos reservados
+            </footer>
+        </div>
+        
+        <style>
+            .ui-state-default, .ui-widget-content .ui-state-default {
+                background-color: #fff !important;
+                background-image: none !important;
+            }
+            
+            #tipoCriptoativo_label { 
+                font-size: 14px !important;
+                font-weight: normal !important;
+                margin-top: 4px !important;
+            }
+            
+            .ui-radiobutton .ui-radiobutton-box {
+                width: 19px !important;
+                height: 19px !important;
+            }
+        </style>
+
+        <!-- jQuery -->
+        <script src="/pim/r/plugin/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="/pim/r/js/adminlte.js"></script>
+
+        <!-- OPTIONAL SCRIPTS -->
+        <script src="/pim/r/js/demo.js"></script>
+
+        <!-- DataTables  & Plugins -->
+        <script src="/pim/r/plugin/datatables/jquery.dataTables.min.js"></script>
+        <script src="/pim/r/plugin/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="/pim/r/plugin/datatables-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="/pim/r/plugin/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+        <script src="/pim/r/plugin/datatables-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="/pim/r/plugin/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+        <script src="/pim/r/plugin/jszip/jszip.min.js"></script>
+        <script src="/pim/r/plugin/pdfmake/pdfmake.min.js"></script>
+        <script src="/pim/r/plugin/pdfmake/vfs_fonts.js"></script>
+        <script src="/pim/r/plugin/datatables-buttons/js/buttons.html5.min.js"></script>
+        <script src="/pim/r/plugin/datatables-buttons/js/buttons.print.min.js"></script>
+        <script src="/pim/r/plugin/datatables-buttons/js/buttons.colVis.min.js"></script>
+    </h:body>
+</html>

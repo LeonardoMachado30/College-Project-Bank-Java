@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>PIM | Perfil</title>
+
+        <!-- DataTables -->
+        <link rel="stylesheet" href="/pim/r/plugin/datatables-bs4/css/dataTables.bootstrap4.min.css" />
+        <link rel="stylesheet" href="/pim/r/plugin/datatables-responsive/css/responsive.bootstrap4.min.css" />
+        <link rel="stylesheet" href="/pim/r/plugin/datatables-buttons/css/buttons.bootstrap4.min.css" />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback" />
+        <link rel="stylesheet" href="/pim/r/plugin/fontawesome-free/css/all.min.css" />
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+        <link rel="stylesheet" href="/pim/r/css/adminlte.min.css" />
+    </h:head>
+    <h:body>        
+        <div class="wrapper">
+            <ui:include src="include/sidebar.xhtml" />
+
+            <div class="content-wrapper">
+                <div class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1 class="m-0">Perfil</h1>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item active">Perfil</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <h:form prependId="false">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Informações Básicas</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="inputName">CPF</label>
+                                                        <h:inputText styleClass="form-control" value="#{loginController.currentUser.cpf}" disabled="true" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="form-group">
+                                                        <label for="inputName">Nome</label>
+                                                        <h:inputText value="#{loginController.currentUser.nome}" maxlength="150" styleClass="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputPassword1">Email</label>
+                                                        <h:inputText value="#{loginController.currentUser.email}" maxlength="50" styleClass="form-control" disabled="true" />
+                                                    </div>  
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputPassword1">Celular</label>
+                                                        <p:inputText value="#{loginController.currentUser.celular}" maxlength="18" styleClass="form-control" />
+                                                    </div>  
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputPassword1">Endereço</label>
+                                                        <h:inputText value="#{loginController.currentUser.endereco}" maxlength="150" styleClass="form-control" />
+                                                    </div>  
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputPassword1">Data de Nascimento</label>
+                                                        <p:inputText disabled="#{loginController.currentUser.dataNascimento != null}" value="#{loginController.currentUser.dataNascimento eq null ? loginController.nascimento : loginController.currentUser.dataNascimento}"  styleClass="form-control">
+                                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                        </p:inputText>
+                                                    </div>  
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <h:commandButton style="margin-top: 32px;" value="Atualizar" action="#{loginController.atualizaCadastro}" styleClass="btn btn-primary btn-block"/>
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </h:form>
+                            </div>
+                        </div>
+                        
+                        <!-- Contratos - Lista de cadastrados -->
+                        <div class="row">
+                            <div class="col-12">
+                                <h:form prependId="false">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Meus Contratos</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <p:dataTable value="#{contratoController.contratosCadastrados}" var="data" emptyMessage="Nenhum contrato cadastrado">
+                                                    <p:column headerText="Tipo do Contrato" priority="1">
+                                                        #{data.tipoContrato.nome}
+                                                    </p:column>
+
+                                                    <p:column headerText="Inclusão" priority="3">
+                                                        <h:outputText value="#{data.inclusao}">
+                                                            <f:convertDateTime parent="dd/MM/yyyy" />
+                                                        </h:outputText>
+                                                    </p:column>
+
+                                                    <p:column headerText="Encerramento" priority="3">
+                                                        <h:outputText value="#{data.encerramento}">
+                                                            <f:convertDateTime parent="dd/MM/yyyy"/>
+                                                        </h:outputText>
+                                                    </p:column>
+
+                                                    <p:column width="130" priority="1">
+                                                        <p:commandLink value="Remover" action="#{contratoController.removerContrato(data.id)}" 
+                                                                       style="color: white; width: 100px;" styleClass="btn btn-danger btn-block">
+                                                            <p:confirm header="Confirme a ação" message="Tem certeza que deseja remover este registro?" icon="pi pi-exclamation-triangle" />
+                                                        </p:commandLink>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-footer">
+                                            <p:commandLink value="Adicionar" onclick="PF('addContrato').show()" styleClass="btn btn-primary btn-block"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Contratos - Confirmação de remoção -->
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" />
+                                        <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" />
+                                    </p:confirmDialog>  
+                                </h:form>
+                            </div>
+                        </div>
+                        
+                        <!-- Contratos - Adição de contrato -->
+                        <p:dialog header="Adicionar Contrato" width="450" modal="true" id="addContrato" widgetVar="addContrato" minHeight="40">
+                            <h:form prependId="false">
+                                <div class="content">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="inputName">Tipo de Contrato</label>
+                                                    <p:selectOneMenu autoWidth="false" style="height: 38px; width: 100%;" id="tipoContrato" value="#{contratoController.contrato}" converter="converterObject">
+                                                        <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+                                                        <f:selectItems value="#{contratoController.tipoContrato}" var="cp" itemValue="#{cp}" itemLabel="#{cp.nome}" />
+                                                    </p:selectOneMenu>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="icheck-primary">
+                                                    <label for="agreeTerms">
+                                                        No ato da contratação você está concordando com a <a href="#" style="color: #0044cc;">definição do serviço prestado</a>.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <p:commandLink value="Adicionar" update="@all" actionListener="#{contratoController.adicionaContrato()}" styleClass="btn btn-primary btn-block"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </h:form>
+                        </p:dialog>
+                        
+                        <!-- Cartões - Lista de cadastrados -->
+                        <div class="row">
+                            <div class="col-12">
+                                <h:form prependId="false">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Meus Cartões</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <p:dataTable value="#{cartaoController.cartoesCadastrados}" var="data" emptyMessage="Nenhum cartão cadastrado">
+                                                    <p:column headerText="Nome">
+                                                        #{data.nome}
+                                                    </p:column>
+
+                                                    <p:column headerText="Agência">
+                                                        #{data.agencia}
+                                                    </p:column>
+
+                                                    <p:column headerText="Conta">
+                                                        #{data.conta}
+                                                    </p:column>
+
+                                                    <p:column headerText="Banco">
+                                                        #{data.banco.nome}
+                                                    </p:column>
+
+                                                    <p:column headerText="Expiração">
+                                                        <h:outputText value="#{data.expiracao}">
+                                                            <f:convertDateTime parent="MM/yyyy" />
+                                                        </h:outputText>
+                                                    </p:column>
+
+                                                    <p:column width="130" priority="1">
+                                                        <p:commandLink value="Remover" action="#{cartaoController.removerCartao(data.id)}" 
+                                                                       style="color: white; width: 100px;" styleClass="btn btn-danger btn-block">
+                                                            <p:confirm header="Confirme a ação" message="Tem certeza que deseja remover este registro?" icon="pi pi-exclamation-triangle" />
+                                                        </p:commandLink>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-footer">
+                                            <p:commandLink value="Adicionar" onclick="PF('addCard').show()" styleClass="btn btn-primary btn-block"/>
+                                        </div>
+                                    </div>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <p:dialog header="Adicionar Cartão" width="450" modal="true" id="addCard" widgetVar="addCard" minHeight="40">
+                <h:form prependId="false">
+                    <div class="content">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="inputName">Banco</label>
+                                        <p:selectOneMenu autoWidth="false" style="height: 38px; width: 100%;" value="#{cartaoController.banco}" id="bancoField" converter="converterObject">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+                                            <f:selectItems value="#{cartaoController.bancoList}" var="cp" itemValue="#{cp}" itemLabel="#{cp.nome}" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="inputName">Nome</label>
+                                        <h:inputText value="#{cartaoController.nomeConta}" maxlength="50" styleClass="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="inputName">Agência</label>
+                                        <h:inputText value="#{cartaoController.agencia}" maxlength="8" styleClass="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="inputName">Conta</label>
+                                        <h:inputText value="#{cartaoController.conta}" maxlength="10" styleClass="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="inputName">Expiração</label>
+                                        <p:inputMask mask="99/9999" value="#{cartaoController.expiracao}" styleClass="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <p:commandLink value="Adicionar" update="@all" actionListener="#{cartaoController.adicionaCartao}" styleClass="btn btn-primary btn-block"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </p:dialog>
+
+            <!-- Main Footer -->
+            <footer class="main-footer">
+                <strong>Copyright &#169; 2020-2020 <a href="#">PIM</a>.</strong>
+                Todos os direitos reservados
+            </footer>
+        </div>
+        
+        <style>
+            .ui-state-default, .ui-widget-content .ui-state-default {
+                background-color: #fff !important;
+                background-image: none !important;
+            }
+            
+            #bancoField_label { 
+                font-size: 14px !important;
+                font-weight: normal !important;
+                margin-top: 4px !important;
+            }
+            
+            #tipoContrato_label { 
+                font-size: 14px !important;
+                font-weight: normal !important;
+                margin-top: 4px !important;
+            }
+            
+            #messages_container {
+                margin-top: 45px !important;
+            }
+        </style>
+
+        <!-- jQuery -->
+        <script src="/pim/r/plugin/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="/pim/r/js/adminlte.js"></script>
+
+        <!-- OPTIONAL SCRIPTS -->
+        <script src="/pim/r/js/demo.js"></script>
+
+        <!-- DataTables  & Plugins -->
+        <script src="/pim/r/plugin/datatables/jquery.dataTables.min.js"></script>
+        <script src="/pim/r/plugin/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="/pim/r/plugin/datatables-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="/pim/r/plugin/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+        <script src="/pim/r/plugin/datatables-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="/pim/r/plugin/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+        <script src="/pim/r/plugin/jszip/jszip.min.js"></script>
+        <script src="/pim/r/plugin/pdfmake/pdfmake.min.js"></script>
+        <script src="/pim/r/plugin/pdfmake/vfs_fonts.js"></script>
+        <script src="/pim/r/plugin/datatables-buttons/js/buttons.html5.min.js"></script>
+        <script src="/pim/r/plugin/datatables-buttons/js/buttons.print.min.js"></script>
+        <script src="/pim/r/plugin/datatables-buttons/js/buttons.colVis.min.js"></script>
+    </h:body>
+</html>

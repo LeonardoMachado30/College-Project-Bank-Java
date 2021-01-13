@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <p:outputPanel>
+        <p:autoUpdate />
+        <p:growl widgetVar="messages" globalOnly="true" keepAlive="5000" id="messages" />
+    </p:outputPanel>
+    
+    <c:if test="#{not empty param['contratoRemovido']}">
+        <script>
+            $(document).ready(function(){
+                if ($(".ui-growl-item").length &lt; 1){
+                    PF('messages').renderMessage({"summary":"Contrato Removido!", "severity":"info"});
+                }
+            });
+        </script>
+    </c:if>
+
+    <c:if test="#{not empty param['contrato']}">
+        <script>
+            $(document).ready(function(){
+                if ($(".ui-growl-item").length &lt; 1){
+                    PF('messages').renderMessage({"summary":"Contrato Cadastrado!", "severity":"info"});
+                }
+            });
+        </script>
+    </c:if>
+
+    <c:if test="#{not empty param['cartaoRemovido']}">
+        <script>
+            $(document).ready(function(){
+                if ($(".ui-growl-item").length &lt; 1){
+                    PF('messages').renderMessage({"summary":"Cartão Removido!", "severity":"info"});
+                }
+            });
+        </script>
+    </c:if>
+
+    <c:if test="#{not empty param['cartaoCriado']}">
+        <script>
+            $(document).ready(function(){
+                if ($(".ui-growl-item").length &lt; 1){
+                    PF('messages').renderMessage({"summary":"Cartão Cadastrado!", "severity":"info"});
+                }
+            });
+        </script>
+    </c:if>
+</ui:composition>

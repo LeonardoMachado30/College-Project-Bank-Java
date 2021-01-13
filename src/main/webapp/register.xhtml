@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>PIM | Novo Usuário</title>
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback" />
+        <link rel="stylesheet" href="r/plugin/fontawesome-free/css/all.min.css" />
+        <link rel="stylesheet" href="r/plugin/icheck-bootstrap/icheck-bootstrap.min.css"/>
+        <link rel="stylesheet" href="r/css/adminlte.min.css" />
+    </h:head>
+    <h:body class="hold-transition register-page">        
+        <p:outputPanel>
+            <p:autoUpdate />
+            <p:growl widgetVar="messages" globalOnly="true" keepAlive="5000" id="messages" />
+        </p:outputPanel>
+        
+        <div class="register-box">
+            <div class="card card-outline card-primary">
+                <div class="card-header text-center">
+                    <a href="/pim/register" class="h1"><b>PIM</b> | Registrar</a>
+                </div>
+                <div class="card-body">
+                    <p class="login-box-msg">Criar uma nova conta</p>
+
+                    <h:form prependId="false">
+                        <div class="input-group mb-3">
+                            <p:inputMask mask="999.999.999-99" autocomplete="false" value="#{loginController.cpf}" styleClass="form-control" placeholder="CPF" />
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-user"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <p:inputText styleClass="form-control" value="#{loginController.nome}" placeholder="Nome Completo" />
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-user"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <p:inputText styleClass="form-control" value="#{loginController.email}" placeholder="Email" />
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-envelope"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <p:password styleClass="form-control" value="#{loginController.senha}" placeholder="Senha (min. 8 dígitos)" />
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <p:password styleClass="form-control" value="#{loginController.confirmaSenha}" placeholder="Confirme a senha" />
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="icheck-primary">
+                                    <h:selectBooleanCheckbox value="#{loginController.checkbox}" id="agreeTerms" />
+                                    <label for="agreeTerms">
+                                        Aceito os <a href="#">termos de uso</a>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <h:commandButton action="#{loginController.cadastrarUsuario()}" styleClass="btn btn-primary btn-block" value="Registrar" />
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-12">
+                                <a href="/pim/index" class="text-center">Já sou cadastrado</a>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <script src="r/plugin/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="r/js/adminlte.min.js"></script>
+    </h:body>
+</html>
